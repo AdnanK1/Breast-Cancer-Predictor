@@ -127,22 +127,26 @@ def get_radar_chart(input_data):
   
   return fig
 
-def add_prediction(input_data):
-    model = pickle.load(open('model\logistic_model.pkl', 'rb'))
-    scaler = pickle.load(open('model\scaler.pkl', 'rb'))
-    input_array = np.array(list(input_data.values())).reshape(1,-1)
-    input_array = scaler.transform(input_array)
-    predict = model.predict(input_array)
-
-    st.subheader("Cell Cluster Prediction")
-    st.write("The cell cluster is predicted to be:")
-
-    if predict[0] == 0:
-        st.write("Benign")
-    else:
-        st.write("Malignant")
-
-    st.write("Probability of being Benign:", round(model.predict_proba(input_array)[0][0], 3))
-    st.write("Probability of being Malignant:", round(model.predict_proba(input_array)[0][1], 3))
-
-    st.write("This app can assist medical professionals in making a diagnosis, but should not be used as a substitute for a professional diagnosis.")
+def add_predictions(input_data):
+  model = pickle.load(open("model/model.pkl", "rb"))
+  scaler = pickle.load(open("model/scaler.pkl", "rb"))
+  
+  input_array = np.array(list(input_data.values())).reshape(1, -1)
+  
+  input_array_scaled = scaler.transform(input_array)
+  
+  prediction = model.predict(input_array_scaled)
+  
+  st.subheader("Cell cluster prediction")
+  st.write("The cell cluster is:")
+  
+  if prediction[0] == 0:
+    st.write("<span class='diagnosis benign'>Benign</span>", unsafe_allow_html=True)
+  else:
+    st.write("<span class='diagnosis malicious'>Malicious</span>", unsafe_allow_html=True)
+    
+  
+  st.write("Probability of being benign: ", model.predict_proba(input_array_scaled)[0][0])
+  st.write("Probability of being malicious: ", model.predict_proba(input_array_scaled)[0][1])
+  
+  st.write("This app can assist medical professionals in making a diagnosis, but should not be used as a substitute for a professional diagnosis.")

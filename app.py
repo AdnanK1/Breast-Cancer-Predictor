@@ -1,5 +1,5 @@
 import streamlit as st 
-from functions import add_sidebar, get_radar_chart, add_prediction
+from functions import add_sidebar, get_radar_chart, add_predictions
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
         st.plotly_chart(radar_chart)
 
     with col2:
-        add_prediction(input_data)
+        add_predictions(input_data)
 
 
 if __name__ == '__main__':
